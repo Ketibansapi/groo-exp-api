@@ -37,7 +37,7 @@ $ npm install express
 Follow [our installing guide](http://expressjs.com/en/starter/installing.html)
 for more information.
 
-### Security Issues
+## Security Issues
 
 If you discover a security vulnerability in Express, please see [Security Policies and Procedures](Security.md).
 
