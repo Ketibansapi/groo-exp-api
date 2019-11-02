@@ -83,7 +83,6 @@ app.get('/about', (req, res) =>{
 	res.render('about');
 });
 
-
 // Use Routes
 app.use('/items', items);
 app.use('/users', users);
