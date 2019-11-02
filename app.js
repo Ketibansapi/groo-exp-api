@@ -1,41 +1,95 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require ('express');
+const path = require ('path');
+const exphbs = require('express-handlebars');
+const methodOverride = require('method-override');
+const flash = require ('connect-flash');
+const session = require ('express-session');
+const bodyParser = require ('body-parser');
+const passport = require('passport');
+const mongoose = require('mongoose');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const app = express();
 
-var app = express();
+// Load Routes
+const items = require('./routes/items');
+const users = require('./routes/users');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// Passport Config
+require('./config/passport/passport')(passport);
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// DB Config
+const db = require('./config/database/database');
+
+// Map global promise - get rid of warning                       ERROR! (Actually)
+mongoose.Promise = global.Promise;
+
+// Connect to mongoose
+mongoose.connect(db.mongoURI, {
+	useNewUrlParser: true
+})
+	.then(() => console.log('MongoDB Connected..'))
+	.catch(err => console.log(err));
+
+
+// Handlebars Middleware
+app.engine('handlebars', exphbs ({
+	defaultLayout: 'main'
+}));
+app.set('view engine', 'handlebars');
+
+//Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+//Static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Method override middleware
+app.use(methodOverride('_method'));
+
+// Express session middleware
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next){
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  res.locals.user = req.user || null;
+  next();
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+//Index Route
+app.get('/', (req, res) => {
+	const title = 'Welcome';
+	res.render('index', {
+		title: title
+	});
 });
 
-module.exports = app;
+//About Route
+app.get('/about', (req, res) =>{
+	res.render('about');
+});
+
+
+// Use Routes
+app.use('/items', items);
+app.use('/users', users);
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
+	console.log(`Server started on port ${port}`);
+});
