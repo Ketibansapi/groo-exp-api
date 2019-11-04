@@ -25,6 +25,7 @@ mongoose.Promise = global.Promise;
 
 // Connect to mongoose
 mongoose.connect(db.mongoURI, {
+	useUnifiedTopology: true,
 	useNewUrlParser: true
 })
 	.then(() => console.log('MongoDB Connected..'))
@@ -72,7 +73,7 @@ app.use(function(req, res, next){
 
 //Index Route
 app.get('/', (req, res) => {
-	const title = 'Welcome';
+	const title = 'API Testing Interface';
 	res.render('index', {
 		title: title
 	});
