@@ -1,1 +1,1 @@
-module.exports = {mongoURI: 'mongodb+srv://ketibansapi:syF3KAbBw2eSLg9@cluster0-glpcf.mongodb.net/test?retryWrites=true&w=majority'}
+module.exports = {mongoURI: 'mongodb+srv://ketibansapi:syF3KAbBw2eSLg9@grooapi-glpcf.mongodb.net/test?retryWrites=true&w=majority'}
