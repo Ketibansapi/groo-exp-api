@@ -45,22 +45,34 @@ router.get('/edit/:id', ensureAuthenticated, (req, res) => {
 router.post('/', ensureAuthenticated, (req, res) => {
   let errors = [];
 
-  if(!req.body.title){
-    errors.push({text:'Please add a title'});
+  if(!req.body.name){
+    errors.push({text:'Please add a name'});
   }
   if(!req.body.details){
     errors.push({text:'Please add some details'});
+  }
+  if(!req.body.brand){
+    errors.push({text:'Please add some brand'});
+  }
+  if(!req.body.price){
+    errors.push({text:'Please add some price'});
+  }
+  if(!req.body.quantity){
+    errors.push({text:'Please add some quantity'});
   }
 
   if(errors.length > 0){
     res.render('items/add', {
       errors: errors,
-      title: req.body.title,
-      details: req.body.details
+      name: req.body.name,
+      details: req.body.details,
+      brand: req.body.brand,
+      price: req.body.price,
+      quantiy: req.body.quantity
     });
   } else {
   	const newUser ={
-  		title: req.body.title,
+  		name: req.body.name,
   		details: req.body.details,
       user: req.user.id
   	}
@@ -80,8 +92,11 @@ router.put('/:id', ensureAuthenticated, (req, res) => {
 	})
 	.then(item => {
 		//New values
-		item.title = req.body.title;
-		item.details = req.body.details;
+		item.name = req.body.name;
+    item.details = req.body.details;
+    item.brand = req.body.brand;
+    item.price = req.body.price;
+    item.quantity = req.body.quantity;
 		
 		item.save()
 			.then(item => {
