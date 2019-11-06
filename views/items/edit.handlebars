@@ -3,8 +3,6 @@
 {{else}}
 
 {{/each}}
-
-<div class="card card-body">
   <h3>Edit your item</h3>
   <form action="/items/{{item.id}}?_method=PUT" method="post">
   	<input type = "hidden" name="_method" value= "PUT">
@@ -30,4 +28,3 @@
     </div>
     <button type="submit" class="btn btn-red">Submit</button>
   </form>
-</div>
