@@ -12,15 +12,15 @@ const ItemSchema = new Schema({
     },
     brand: {
 		type: String,
-		// required: true
+		required: true
     },
     price: {
 		type: Number,
-		// required: true
+		required: true
     },
     quantity: {
 		type: Number,
-		// required: true
+		required: true
 	},
 	user:{
         type: String,

@@ -68,12 +68,15 @@ router.post('/', ensureAuthenticated, (req, res) => {
       details: req.body.details,
       brand: req.body.brand,
       price: req.body.price,
-      quantiy: req.body.quantity
+      quantity: req.body.quantity
     });
   } else {
   	const newUser ={
   		name: req.body.name,
-  		details: req.body.details,
+      details: req.body.details,
+      brand: req.body.brand,
+      price: req.body.price,
+      quantity: req.body.quantity,
       user: req.user.id
   	}
     new Item(newUser)
