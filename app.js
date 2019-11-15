@@ -20,7 +20,7 @@ require('./config/passport/passport')(passport);
 // DB Config
 const db = require('./config/database/database');
 
-// Map global promise - get rid of warning                       ERROR! (Actually)
+// Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 
 // Connect to mongoose

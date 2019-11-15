@@ -11,16 +11,13 @@ const ItemSchema = new Schema({
 		required: true
     },
     brand: {
-		type: String,
-		required: true
+		type: String
     },
     price: {
-		type: Number,
-		required: true
+		type: Number
     },
     quantity: {
-		type: Number,
-		required: true
+		type: Number
 	},
 	user:{
         type: String,
